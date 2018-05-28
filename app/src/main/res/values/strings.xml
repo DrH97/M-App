@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">M-APP</string>
     <string name="action_settings">Settings</string>
+    <string name="Google">Google</string>
+    <string name="Facebook">Facebook</string>
+    <string name="entername">Enter name</string>
+    <string name="enteremail">enter email</string>
+    <string name="enterpassword">enter password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="login">Login</string>
 </resources>
