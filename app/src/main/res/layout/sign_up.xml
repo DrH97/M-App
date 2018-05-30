@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     android:background="@drawable/bc">
+
+    <Button
+        android:id="@+id/Signup_google_buton"
+        android:layout_width="287dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margintop"
+        android:background="@color/RedHue"
+        android:text="@string/Google"
+        android:textColor="@color/whiteHue"/>
+
+    <Button
+        android:id="@+id/signup_facebook_button"
+        android:layout_width="287dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginbtwnbuttons"
+        android:background="@color/BlueHUe"
+        android:text="@string/Facebook"
+        android:textColor="@color/whiteHue"/>
+
+    <EditText
+        android:id="@+id/signup_name"
+        android:layout_width="287dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:hint="@string/entername"
+        android:textColor="@color/whiteHue"
+        android:textColorHint="@color/whiteHue" />
+
+    <EditText
+        android:id="@+id/signup_email"
+        android:layout_width="287dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginbtwnbuttons"
+        android:hint="@string/enteremail"
+        android:textColor="@color/whiteHue"
+        android:textColorHint="@color/whiteHue" />
+
+    <EditText
+        android:id="@+id/signup_password"
+        android:layout_width="287dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginbtwnbuttons"
+        android:hint="@string/enterpassword"
+        android:inputType="textPassword"
+        android:textColorHint="@color/whiteHue" />
+
+    <EditText
+        android:id="@+id/signup_confirm_password"
+        android:layout_width="287dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginbtwnbuttons"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        android:textColorHint="@color/whiteHue" />
+
+    <Button
+        android:id="@+id/signup_signup"
+        android:layout_width="287dp"
+        android:layout_height="38dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginbtwnbuttons"
+        android:background="@color/RedHue"
+        android:text="@string/sign_up"
+        android:textColor="@color/whiteHue"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="OR"
+        android:textColor="@color/whiteHue"
+        android:textColorHint="@color/whiteHue"/>
+
+    <Button
+        android:id="@+id/signup_login"
+        android:layout_width="277dp"
+        android:layout_height="38dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@color/whiteHue"
+        android:text="@string/login"
+        />
+
+</LinearLayout>
