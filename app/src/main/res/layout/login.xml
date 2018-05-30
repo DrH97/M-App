@@ -36,6 +36,7 @@
         android:textColor="@color/whiteHue"/>
 
     <EditText
+        android:id="@+id/login_password"
         android:layout_width="248dp"
         android:layout_height="38dp"
         android:layout_gravity="center"
