@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/gf"
-    android:gravity="center"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bc"
+        android:scaleType="centerCrop"
+        />
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent">
 
     <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
@@ -13,7 +26,7 @@
         <!--android:orientation="vertical"-->
         <!--&gt;-->
 
-    <!--<Button-->
+        <!--<Button-->
         <!--android:id="@+id/Signup_google_buton"-->
         <!--android:layout_width="259dp"-->
         <!--android:layout_height="wrap_content"-->
@@ -23,7 +36,7 @@
         <!--android:text="@string/Google"-->
         <!--android:textColor="@color/whiteHue"/>-->
 
-    <!--<Button-->
+        <!--<Button-->
         <!--android:id="@+id/signup_facebook_button"-->
         <!--android:layout_width="257dp"-->
         <!--android:layout_height="wrap_content"-->
@@ -33,39 +46,40 @@
         <!--android:text="@string/Facebook"-->
         <!--android:textColor="@color/whiteHue"/>-->
 
-    <EditText
-        android:id="@+id/login_email"
-        android:layout_width="251dp"
-        android:layout_height="39dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginbtwnbuttons"
-        android:hint="you@example.com"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/whiteHue"
-        android:textColor="@color/whiteHue"/>
+        <EditText
+            android:id="@+id/login_email"
+            android:layout_width="251dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/marginbtwnbuttons"
+            android:hint="you@example.com"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/whiteHue"
+            android:textColor="@color/whiteHue"/>
 
-    <EditText
-        android:id="@+id/login_password"
-        android:layout_width="248dp"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginbtwnbuttons"
-        android:hint="password"
-        android:textColor="@color/whiteHue"
-        android:textColorHint="@color/whiteHue"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="248dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
 
-    <Button
-        android:id="@+id/btn_login_login"
-        android:layout_width="249dp"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginbtwnbuttons"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/login"
-        android:textColor="@color/whiteHue"/>
+            android:layout_marginTop="@dimen/marginbtwnbuttons"
+            android:hint="password"
+            android:textColor="@color/whiteHue"
+            android:textColorHint="@color/whiteHue"
+            android:inputType="textPassword" />
 
-    <!--<TextView-->
+        <Button
+            android:id="@+id/btn_login_login"
+            android:layout_width="249dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/marginbtwnbuttons"
+            android:background="@color/RedHue"
+            android:text="@string/login"
+            android:textColor="@color/whiteHue"/>
+
+        <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_gravity="center"-->
@@ -73,17 +87,19 @@
         <!--android:text="OR"-->
         <!--android:textColor="@color/whiteHue"/>-->
 
-    <Button
-        android:id="@+id/btn_login_signup"
-        android:layout_width="243dp"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@color/colorAccent"
-        android:text="@string/sign_up"
-        android:textColor="@color/whiteHue"
-        />
+        <Button
+            android:id="@+id/btn_login_signup"
+            android:layout_width="243dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent"
+            android:text="@string/sign_up"
+            android:textColor="@color/whiteHue"
+            />
 
-    <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
 
-</LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

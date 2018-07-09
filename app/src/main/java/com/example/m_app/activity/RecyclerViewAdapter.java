@@ -1,4 +1,4 @@
-package com.example.m_app;
+package com.example.m_app.activity;
 
 public class RecyclerViewAdapter {
 }
