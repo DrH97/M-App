@@ -1,3 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="margintop">50dp</dimen>
+    <dimen name="marginbtwnbuttons">20dp</dimen>
+    <dimen name="margin">10dp</dimen>
+    <dimen name="linearheight">180dp</dimen>
+    <dimen name="place_text_margin">30dp</dimen>
 </resources>
