@@ -9,4 +9,12 @@
     <string name="confirm_password">confirm password</string>
     <string name="sign_up">Sign up</string>
     <string name="login">Login</string>
+    <string name="place_name">Place Name</string>
+    <string name="open_hours">Open Hours</string>
+    <string name="place_category_type">Place Category Type</string>
+    <string name="location">Location</string>
+    <string name="place_category_list">Place Category</string>
+    <string name="activities">Activities</string>
+    <string name="activities">Activities</string>
+    <string name="details">Details</string>
 </resources>
