@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.m_app.GlideApp;
 import com.example.m_app.R;
 import com.example.m_app.activity.PlaceActivity;
@@ -29,12 +30,14 @@ implements Filterable {
 
     private Context context;
 
-    private List<Place> placeList, filteredPlaceList;
+    private List<Place> placeList;
+    private List<Place> filteredPlaceList;
 
     public PlacesAdapter(Context context, List<Place> placeList) {
         this.context = context;
         this.placeList = placeList;
         this.filteredPlaceList = placeList;
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -67,7 +70,8 @@ implements Filterable {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final Place place = placeList.get(position);
+
+        final Place place = filteredPlaceList.get(position);
         holder.title.setText(place.getTitle());
         holder.location.setText(place.getLocation());
         holder.description.setText(place.getDescription());
@@ -88,6 +92,7 @@ implements Filterable {
         GlideApp.with(context)
                 .load(place.getImage())
                 .placeholder(R.drawable.bc_small)
+                .apply(RequestOptions.circleCropTransform())
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(holder.smallerImage);
@@ -111,7 +116,7 @@ implements Filterable {
 
     @Override
     public int getItemCount() {
-        return placeList.size();
+        return filteredPlaceList.size();
     }
 
 
@@ -127,11 +132,13 @@ implements Filterable {
                     List<Place> filteredPlaces = new ArrayList<>();
 
                     for (Place row : placeList) {
+
                         if (row.getTitle().toLowerCase().contains(charString.toLowerCase())
                                 || row.getDescription().toLowerCase().contains(charString.toLowerCase())
-                                || row.getLocation().toLowerCase().contains(charString.toLowerCase())
-                                || row.getPrice().toString().contains(charSequence)) {
+                                || row.getLocation().toLowerCase().contains(charString.toLowerCase())) {
+
                             filteredPlaces.add(row);
+
                         }
                     }
 
@@ -146,7 +153,7 @@ implements Filterable {
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredPlaceList = (List<Place>) filterResults.values;
+                filteredPlaceList = (ArrayList<Place>) filterResults.values;
 
                 notifyDataSetChanged();
             }

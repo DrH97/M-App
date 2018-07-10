@@ -4,20 +4,23 @@
 
     <item
         android:id="@+id/action_search"
-        android:orderInCategory="100"
+        android:orderInCategory="90"
         android:title="@string/action_search"
         app:showAsAction="always"
         android:icon="@drawable/ic_search_white_24dp"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
-    <item
-        android:id="@+id/action_filter"
-        android:orderInCategory="100"
-        android:title="@string/action_Filter"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_filter_list_white_24dp"
-        />
+    <!--<item-->
+        <!--android:id="@+id/action_filter"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_Filter"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--android:icon="@drawable/ic_filter_list_white_24dp"-->
+        <!--/>-->
 
-    <item android:title="@string/action_sort">
+    <item android:title="@string/action_sort"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_sort_white_24dp"
+        android:orderInCategory="100">
         <menu>
             <item
                 android:id="@+id/action_sort_price"

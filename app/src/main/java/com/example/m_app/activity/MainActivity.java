@@ -12,11 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.m_app.R;
@@ -137,14 +137,12 @@ public class MainActivity extends AppCompatActivity
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (!searchView.isIconified()) {
+            searchView.setIconified(true);
         } else {
             super.onBackPressed();
         }
 
-        if (searchView.isIconified())
-            searchView.setIconified(true);
-
-        return;
     }
 
     @Override
@@ -185,6 +183,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_search) {
             return true;
         }
 
