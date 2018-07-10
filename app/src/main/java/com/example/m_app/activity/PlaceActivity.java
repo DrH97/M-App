@@ -1,7 +1,9 @@
 package com.example.m_app.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,10 +14,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.m_app.GlideApp;
 import com.example.m_app.R;
+import com.example.m_app.Utils;
 import com.example.m_app.adapter.ActivitiesListAdapter;
 import com.example.m_app.model.Activity;
 import com.example.m_app.model.ActivityResponse;
@@ -36,21 +40,29 @@ public class PlaceActivity extends AppCompatActivity {
     private ImageView image;
     private TextView title, description, price, location;
     private String placeTitle, placeDesc, placeImage, placePrice, placeLoc;
+    private boolean placeFavourite;
 
     private int place_id;
 
     private Toolbar toolbar;
     private ProgressBar mProgressBar, mActProgressBar;
 
+    private Utils utils;
+
     private List<Activity> activities = new ArrayList<>();
 
     private ExpandableListView expListView;
     private ActivitiesListAdapter listAdapter;
 
+    private MenuItem favMenuItem;
+    private Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
+
+        utils = new Utils(this);
 
         mProgressBar = findViewById(R.id.place_progressBar);
         mActProgressBar = findViewById(R.id.activities_progressBar);
@@ -108,6 +120,14 @@ public class PlaceActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.place_menu, menu);
+
+        this.menu = menu;
+
+        if (getIntent().getBooleanExtra("favourite", false))
+            menu.findItem(R.id.action_favourite).setIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_favorite_accent_24dp));
+        else
+            menu.findItem(R.id.action_favourite).setIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_favorite_border_white_24dp));
+
         return true;
     }
 
@@ -120,11 +140,16 @@ public class PlaceActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_favourite) {
+            setFavourite(place_id);
             return true;
         }
 
         if (id == R.id.action_share) {
-            return true;
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome place from M-App: " + placeTitle);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -140,6 +165,7 @@ public class PlaceActivity extends AppCompatActivity {
                 placeDesc = getIntent().getStringExtra("desc");
                 placeImage = getIntent().getStringExtra("image");
                 placeLoc = getIntent().getStringExtra("location");
+                placeFavourite = getIntent().getBooleanExtra("favourite", false);
 
                 placePrice = getIntent().getStringExtra("price");
 
@@ -168,12 +194,20 @@ public class PlaceActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayShowTitleEnabled(true);
                 getSupportActionBar().setTitle(placeTitle);
 
+//                Toast.makeText(getBaseContext(), menu.getItem(1).getItemId(), Toast.LENGTH_SHORT).show();
+                if (favMenuItem != null)
+                    Toast.makeText(getBaseContext(), favMenuItem.getItemId(), Toast.LENGTH_SHORT).show();
+//                    if (placeFavourite)
+//                        favMenuItem.setIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_favorite_accent_24dp));
+//                    else
+//                        favMenuItem.setIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_favorite_border_white_24dp));
+
+
                 mProgressBar.setVisibility(View.GONE);
                 setupActivities();
             } else {
                 finish();
             }
-
         }
     }
 
@@ -212,5 +246,18 @@ public class PlaceActivity extends AppCompatActivity {
         mActProgressBar.setVisibility(View.GONE);
     }
 
+    public void setFavourite(int adapterPosition) {
+//        Toast.makeText(context, filteredPlaceList.get(adapterPosition).isFavourite() + "", Toast.LENGTH_SHORT).show();
+        if (placeFavourite) {
+            placeFavourite = false;
+            utils.removeFavourite(place_id);
+            menu.findItem(R.id.action_favourite).setIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_favorite_border_white_24dp));
+        } else {
+            menu.findItem(R.id.action_favourite).setIcon(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_favorite_accent_24dp));
+            placeFavourite = true;
+            utils.setFavourite(place_id);
+        }
+
+    }
 
 }

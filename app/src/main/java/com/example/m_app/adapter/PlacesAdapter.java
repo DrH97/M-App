@@ -106,7 +106,7 @@ implements Filterable {
         context.startActivity(intent);
     }
 
-    private void setFavourite(int adapterPosition) {
+    public void setFavourite(int adapterPosition) {
 //        Toast.makeText(context, filteredPlaceList.get(adapterPosition).isFavourite() + "", Toast.LENGTH_SHORT).show();
         if (filteredPlaceList.get(adapterPosition).isFavourite()){
             filteredPlaceList.get(adapterPosition).setFavourite(false);
@@ -128,7 +128,7 @@ implements Filterable {
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         final Place place = filteredPlaceList.get(position);
         holder.title.setText(place.getTitle());
@@ -173,12 +173,14 @@ implements Filterable {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PlaceActivity.class);
+                intent.putExtra("position", position);
                 intent.putExtra("title", place.getTitle());
                 intent.putExtra("id", place.getId());
                 intent.putExtra("desc", place.getDescription());
                 intent.putExtra("price", place.getPrice());
                 intent.putExtra("image", place.getImage());
                 intent.putExtra("location", place.getLocation());
+                intent.putExtra("favourite", place.isFavourite());
 
                 context.startActivity(intent);
             }

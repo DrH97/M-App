@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private List<Place> placeList = new ArrayList<>();
+    private List<Place> defaultPlaceList = new ArrayList<>();
 
     private Utils utils;
 
@@ -113,8 +114,13 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<PlaceResponse>() {
             @Override
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
-                if (response.body() != null && response.body().getTotalResults() > 0)
+                if (response.body() != null && response.body().getTotalResults() > 0) {
+
                     setPlacesData(response.body().getPlaces());
+
+                    defaultPlaceList.clear();
+                    defaultPlaceList.addAll(response.body().getPlaces());
+                }
 
             }
 
@@ -236,9 +242,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
         if (id == R.id.action_search) {
             return true;
         }
@@ -263,15 +269,27 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_profile) {
+        if (id == R.id.nav_places) {
+
+            setPlacesData(defaultPlaceList);
+
+        } else if (id == R.id.nav_profile) {
 
         } else if (id == R.id.nav_favourites) {
-
+            selectFavouritePlaces();
         } else if (id == R.id.nav_offers) {
+
+            Toast.makeText(this, "Sorry, there seem to be no offers at the moment...", Toast.LENGTH_LONG).show();
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome app called M-App on playstore: 'Link goes here' ");
+            startActivity(intent);
+
+//        } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_about) {
 
@@ -288,6 +306,23 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void selectFavouritePlaces() {
+        List<Place> favPlaces = new ArrayList<>();
+
+        for (Place place : placeList) {
+            if (place.isFavourite()) {
+                favPlaces.add(place);
+            }
+        }
+
+        if (favPlaces.size() > 0) {
+//            placeList = favPlaces;
+            setPlacesData(favPlaces);
+        } else {
+            Toast.makeText(this, "You have no favourite places yet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
