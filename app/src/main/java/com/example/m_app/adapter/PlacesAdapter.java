@@ -88,7 +88,22 @@ implements Filterable {
             favourites = utils.getFavourites();
 
             setFavourites();
+
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharePlace(getAdapterPosition());
+                }
+            });
         }
+    }
+
+    private void sharePlace(int adapterPosition) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome place from M-App: " + filteredPlaceList.get(adapterPosition).getTitle());
+        context.startActivity(intent);
     }
 
     private void setFavourite(int adapterPosition) {
@@ -122,7 +137,7 @@ implements Filterable {
 
         holder.price.setText("FREE");
 
-        if (place.getPrice() != null)
+        if (place.getPrice() != null && place.getPrice() != 0.0)
             holder.price.setText(place.getPrice().toString());
 
 //        if (favourites != null) {

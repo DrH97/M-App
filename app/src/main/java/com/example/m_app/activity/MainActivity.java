@@ -28,6 +28,8 @@ import com.example.m_app.rest.ApiClient;
 import com.example.m_app.rest.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     private List<Place> placeList = new ArrayList<>();
 
     private Utils utils;
+
+    private boolean sortPrice, sortTitle, sortLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +127,49 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public void sortPlacesDataByTitle() {
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place place, Place t1) {
+                return place.getTitle().compareToIgnoreCase(t1.getTitle());
+            }
+        });
+
+        mPlacesAdapter.notifyDataSetChanged();
+    }
+
+    public void sortPlacesDataByPrice() {
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place place, Place t1) {
+                if (place.getPrice() == null)
+                    place.setPrice(0.0);
+                if (t1.getPrice() == null)
+                    t1.setPrice(0.0);
+                return place.getPrice().toString().compareToIgnoreCase(t1.getPrice().toString());
+            }
+        });
+
+        mPlacesAdapter.notifyDataSetChanged();
+    }
+
+    public void sortPlacesDataByLocation() {
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place place, Place t1) {
+                return place.getLocation().compareToIgnoreCase(t1.getLocation());
+            }
+        });
+
+        mPlacesAdapter.notifyDataSetChanged();
+    }
+
     private void setPlacesData(List<Place> places) {
         placeList.clear();
         placeList.addAll(places);
 
         setFavourites();
-
+//
         mSwipeRefreshLayout.setRefreshing(false);
 
         mPlacesAdapter.notifyDataSetChanged();
@@ -200,6 +241,15 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.action_search) {
             return true;
+        }
+        if (id == R.id.action_sort_title){
+            sortPlacesDataByTitle();
+        }
+        if (id == R.id.action_sort_location){
+            sortPlacesDataByLocation();
+        }
+        if (id == R.id.action_sort_price){
+            sortPlacesDataByPrice();
         }
 
         return super.onOptionsItemSelected(item);

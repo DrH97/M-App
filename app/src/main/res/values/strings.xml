@@ -44,7 +44,7 @@
     <string name="action_Filter">Filter</string>
     <string name="action_sort">Sort</string>
     <string name="action_sort_price">By Price</string>
-    <string name="action_sort_name">By Name</string>
+    <string name="action_sort_title">By Title</string>
     <string name="action_sort_location">By Location</string>
 
     <string name="facebook_application_id" translatable="false">1791254564245714</string>

@@ -15,6 +15,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="Activity Name"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +28,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Price"
-        android:textColor="@color/colorAccent"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/activity_name"
         app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>
