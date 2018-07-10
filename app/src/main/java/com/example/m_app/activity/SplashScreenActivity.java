@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.m_app.R;
 import com.example.m_app.Utils;
@@ -42,6 +43,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private Button firebaseLoginButton;
+    private TextView skipLogin;
 
     private Utils utils;
     /**
@@ -113,6 +115,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         utils = new Utils(this);
 
         firebaseLoginButton = findViewById(R.id.firebase_login);
+        skipLogin = findViewById(R.id.skipLogin);
 
         actions_view = findViewById(R.id.actions_view);
 
@@ -135,12 +138,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void showProgress(boolean b) {
         if (b) {
             progressBar.setVisibility(View.VISIBLE);
-            firebaseLoginButton.setVisibility(View.VISIBLE);
+            firebaseLoginButton.setVisibility(View.INVISIBLE);
+            skipLogin.setVisibility(View.GONE);
 //            actions_view.setVisibility(View.GONE);
         }
         else {
             progressBar.setVisibility(View.GONE);
             firebaseLoginButton.setVisibility(View.VISIBLE);
+            skipLogin.setVisibility(View.VISIBLE);
 //            actions_view.setVisibility(View.VISIBLE);
         }
     }
@@ -207,7 +212,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     }
 
-
     private class InitializeApp extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -215,13 +219,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             try {
                 Thread.sleep(1000);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             return utils.auth();
-
         }
 
         @Override

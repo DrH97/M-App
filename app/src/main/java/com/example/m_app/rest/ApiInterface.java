@@ -1,5 +1,6 @@
 package com.example.m_app.rest;
 
+import com.example.m_app.model.ActivityResponse;
 import com.example.m_app.model.PlaceResponse;
 import com.example.m_app.model.UserResponse;
 
@@ -29,18 +30,18 @@ public interface ApiInterface {
     @GET("places")
     Call<PlaceResponse> getPlaces();
 
-//    @GET("instructors")
-//    Call<InstructorResponse> getInstructors();
+    @GET("places/{id}/activities")
+    Call<ActivityResponse> getPlaceActivities(@Path("id") int id);
 //
 //    @GET("users/{id}/workouts")
-//    Call<WorkoutResponse> getWorkouts(@Path("id") Integer userId);
+//    Call<ActivityResponse> getActivities(@Path("id") Integer userId);
 //
 //    @FormUrlEncoded
 //    @POST("workouts")
-//    Call<WorkoutResponse> addWorkout(@Field("user_id") int user_id, @Field("location_id") int location_id, @Field("workout_date") String date, @Field("exercise_type") String exercise, @Field("reps") int reps, @Field("sets") int sets);
+//    Call<ActivityResponse> addWorkout(@Field("user_id") int user_id, @Field("location_id") int location_id, @Field("workout_date") String date, @Field("exercise_type") String exercise, @Field("reps") int reps, @Field("sets") int sets);
 //
 //    @POST("workouts/delete/{id}")
-//    Call<WorkoutResponse> deleteWorkout(@Path("id") int workout_id);
+//    Call<ActivityResponse> deleteWorkout(@Path("id") int workout_id);
 //
 //    @FormUrlEncoded
 //    @POST("users/{id}/gyms")

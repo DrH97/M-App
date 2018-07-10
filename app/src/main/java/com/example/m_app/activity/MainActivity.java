@@ -1,5 +1,7 @@
 package com.example.m_app.activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.m_app.R;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private PlacesAdapter mPlacesAdapter;
     private LinearLayoutManager mLinearLayoutManager;
+    private SearchView searchView;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -96,18 +100,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void preparePlacesData() {
-        Place place = new Place(1, "Trial", "//images.ctfassets.net/", 2, "Lorem Ipsum", 300.0);
-        placeList.add(place);
-
-        place = new Place(1, "Trial 2", "url 2 here", 3, "Lorem Ipsum", 9300.0);
-        placeList.add(place);
-
-        place = new Place(1, "Trial 3", "url 3 here", 4, "Lorem Ipsum", 500.0);
-        placeList.add(place);
-
-        mPlacesAdapter.notifyDataSetChanged();
-
-        mSwipeRefreshLayout.setRefreshing(false);
+//        mSwipeRefreshLayout.setRefreshing(false);
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -116,31 +109,70 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<PlaceResponse>() {
             @Override
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
-                if (response.body() != null)
-                    Log.e(TAG, response.body().getTotalResults().toString());
+                if (response.body() != null && response.body().getTotalResults() > 0)
+                    setPlacesData(response.body().getPlaces());
+
             }
 
             @Override
             public void onFailure(Call<PlaceResponse> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getApplication(), "Failed to get data, please swipe to try again...", Toast.LENGTH_LONG).show();
                 Log.e(TAG, t.toString());
             }
         });
     }
 
+    private void setPlacesData(List<Place> places) {
+        placeList.clear();
+        placeList.addAll(places);
+
+        mPlacesAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+
+        if (searchView.isIconified())
+            searchView.setIconified(true);
+
+        return;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                mPlacesAdapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                mPlacesAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
         return true;
     }
 

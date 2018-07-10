@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -110,7 +109,6 @@ public class Utils {
     public Map getUserData() {
         Map <String, String> arrayMap = new HashMap<>();
 
-        Log.e("Utils", sharedPrefs.getAll().toString());
         String username = sharedPrefs.getString("username", "Gymtastic App");
         String email = sharedPrefs.getString("email", "gymtastic.app.com");
         String photo = sharedPrefs.getString("photo", "gymtastic");

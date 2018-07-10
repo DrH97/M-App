@@ -49,5 +49,6 @@
 
     <string name="facebook_application_id" translatable="false">1791254564245714</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1791254564245714</string>
+    <string name="search_hint">Type to search</string>
 
 </resources>

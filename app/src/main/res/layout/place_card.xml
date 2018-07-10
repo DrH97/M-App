@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/card_place_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +66,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:text="Place Name"
+            android:shadowRadius="2"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowColor="@color/black_overlay"
             android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
             app:layout_constraintStart_toEndOf="@+id/card_place_thumb_image"
             app:layout_constraintTop_toTopOf="@+id/card_place_thumb_image" />
@@ -78,6 +82,10 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:text="Location"
+            android:shadowRadius="2"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowColor="@color/whiteHue"
             app:layout_constraintBottom_toBottomOf="@+id/card_place_thumb_image"
             app:layout_constraintStart_toEndOf="@+id/card_place_thumb_image"
             app:layout_constraintTop_toBottomOf="@+id/card_place_title" />

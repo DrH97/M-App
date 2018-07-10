@@ -7,27 +7,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.m_app.GlideApp;
 import com.example.m_app.R;
 import com.example.m_app.activity.PlaceActivity;
 import com.example.m_app.model.Place;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHolder> {
+public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHolder>
+implements Filterable {
 
     private static final String TAG = PlacesAdapter.class.getSimpleName();
 
     private Context context;
 
-    private List<Place> placeList;
+    private List<Place> placeList, filteredPlaceList;
 
     public PlacesAdapter(Context context, List<Place> placeList) {
         this.context = context;
         this.placeList = placeList;
+        this.filteredPlaceList = placeList;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -62,16 +69,27 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Place place = placeList.get(position);
         holder.title.setText(place.getTitle());
-        holder.location.setText(place.getLocationId().toString());
+        holder.location.setText(place.getLocation());
         holder.description.setText(place.getDescription());
-        holder.price.setText(place.getPrice().toString());
 
-        Glide.with(context)
-                .load(R.drawable.gf)
+        holder.price.setText("FREE");
+
+        if (place.getPrice() != null)
+            holder.price.setText(place.getPrice().toString());
+
+        GlideApp.with(context)
+                .load(place.getImage())
+                .placeholder(R.drawable.gf_small)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(holder.image);
 
-        Glide.with(context)
-                .load(R.drawable.bc)
+
+        GlideApp.with(context)
+                .load(place.getImage())
+                .placeholder(R.drawable.bc_small)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(holder.smallerImage);
 
 
@@ -84,7 +102,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
                 intent.putExtra("desc", place.getDescription());
                 intent.putExtra("price", place.getPrice());
                 intent.putExtra("image", place.getImage());
-                intent.putExtra("location", place.getLocationId());
+                intent.putExtra("location", place.getLocation());
 
                 context.startActivity(intent);
             }
@@ -94,6 +112,45 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
     @Override
     public int getItemCount() {
         return placeList.size();
+    }
+
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    filteredPlaceList = placeList;
+                } else {
+                    List<Place> filteredPlaces = new ArrayList<>();
+
+                    for (Place row : placeList) {
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())
+                                || row.getDescription().toLowerCase().contains(charString.toLowerCase())
+                                || row.getLocation().toLowerCase().contains(charString.toLowerCase())
+                                || row.getPrice().toString().contains(charSequence)) {
+                            filteredPlaces.add(row);
+                        }
+                    }
+
+                    filteredPlaceList = filteredPlaces;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredPlaceList;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteredPlaceList = (List<Place>) filterResults.values;
+
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class WorkoutResponse {
+public class ActivityResponse {
 
     @SerializedName("status")
     private String status;
@@ -34,7 +34,7 @@ public class WorkoutResponse {
     private Integer totalResults;
 
     @SerializedName("results")
-    private List<Workout> workouts;
+    private List<Activity> activities;
 
     public String getStatus() {
         return status;
@@ -100,12 +100,12 @@ public class WorkoutResponse {
         this.totalResults = totalResults;
     }
 
-    public List<Workout> getWorkouts() {
-        return workouts;
+    public List<Activity> getActivities() {
+        return activities;
     }
 
-    public void setWorkouts(List<Workout> workouts) {
-        this.workouts = workouts;
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
 
     public String getMessage() {
