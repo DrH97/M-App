@@ -127,8 +127,21 @@ public class MainActivity extends AppCompatActivity
         placeList.clear();
         placeList.addAll(places);
 
-        mPlacesAdapter.notifyDataSetChanged();
+        setFavourites();
+
         mSwipeRefreshLayout.setRefreshing(false);
+
+        mPlacesAdapter.notifyDataSetChanged();
+    }
+
+    public void setFavourites() {
+
+        if (utils.getFavourites() != null) {
+            for (Place place : placeList) {
+                if (utils.getFavourites().contains(place.getId().toString()))
+                    place.setFavourite(true);
+            }
+        }
     }
 
     @Override
@@ -231,4 +244,5 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh() {
         preparePlacesData();
     }
+
 }

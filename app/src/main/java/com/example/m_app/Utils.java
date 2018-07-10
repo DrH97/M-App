@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,10 +21,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Utils {
+
+    private static final String TAG = Utils.class.getSimpleName();
+
     private Context context;
     private SharedPreferences sharedPrefs;
 
@@ -102,7 +109,10 @@ public class Utils {
         editor.putBoolean("auth", true);
         editor.putString("username", user.getDisplayName());
         editor.putString("email", user.getEmail());
-        editor.putString("photo", user.getPhotoUrl().toString());
+
+        if (user.getPhotoUrl() != null)
+            editor.putString("photo", user.getPhotoUrl().toString());
+
         editor.apply();
     }
 
@@ -134,5 +144,58 @@ public class Utils {
 
         username.setText(userData.get("username").toString());
         email.setText(userData.get("email").toString());
+    }
+
+    public void setFavourite(int favid) {
+        Log.e(TAG, "Setting favourite");
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        String id = String.valueOf(favid);
+
+        ArrayList<String> favs = new ArrayList<>();
+        Set<String> favSet = new HashSet<>();
+        favSet.addAll(getFavourites());
+        favSet.add(id);
+
+        editor.putStringSet("favourites"+getUserEmail(), favSet);
+        editor.commit();
+
+//        Log.e(TAG, "New Shared prefs: " + sharedPrefs.getAll().toString());
+    }
+
+    public ArrayList<String> getFavourites() {
+        Set<String> favSet = sharedPrefs.getStringSet("favourites"+getUserEmail(), null);
+
+        ArrayList<String> favList = new ArrayList<>();
+
+        if (favSet != null)
+            favList.addAll(favSet);
+
+        return favList;
+    }
+
+    public void removeFavourite(int favid) {
+
+        Log.e(TAG, "Removing favourite");
+
+        String id = String.valueOf(favid);
+//        Log.e(TAG, "Shared prefs: " + sharedPrefs.getAll().toString());
+
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        ArrayList<String> favs = new ArrayList<>();
+        Set<String> favSet = new HashSet<>();
+        favSet.addAll(getFavourites());
+        favSet.remove(id);
+
+        editor.putStringSet("favourites"+getUserEmail(), favSet);
+        editor.commit();
+//
+//        Log.e(TAG, "Newerer Shared prefs: " + sharedPrefs.getAll().toString());
+
+    }
+
+    public String getUserEmail() {
+        return sharedPrefs.getString("email", null);
     }
 }

@@ -165,10 +165,13 @@ public class PlaceActivity extends AppCompatActivity {
                 description.setText(placeDesc);
                 price.setText(placePrice);
 
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
                 getSupportActionBar().setTitle(placeTitle);
 
                 mProgressBar.setVisibility(View.GONE);
                 setupActivities();
+            } else {
+                finish();
             }
 
         }

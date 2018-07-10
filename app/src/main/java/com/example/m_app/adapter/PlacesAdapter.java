@@ -2,6 +2,7 @@ package com.example.m_app.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.m_app.GlideApp;
 import com.example.m_app.R;
+import com.example.m_app.Utils;
 import com.example.m_app.activity.PlaceActivity;
 import com.example.m_app.model.Place;
 
@@ -28,20 +30,37 @@ implements Filterable {
 
     private static final String TAG = PlacesAdapter.class.getSimpleName();
 
+    private Utils utils;
+
     private Context context;
 
     private List<Place> placeList;
     private List<Place> filteredPlaceList;
+    private List<String> favourites;
 
     public PlacesAdapter(Context context, List<Place> placeList) {
         this.context = context;
         this.placeList = placeList;
         this.filteredPlaceList = placeList;
 
+        utils = new Utils(context);
+        this.favourites = utils.getFavourites();
+
+//        setFavourites();
+    }
+
+    public void setFavourites() {
+
+        if (utils.getFavourites() != null) {
+            for (Place place : filteredPlaceList) {
+                if (utils.getFavourites().contains(place.getId().toString()))
+                    place.setFavourite(true);
+            }
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image, smallerImage, viewArrow;
+        public ImageView image, smallerImage, viewArrow, favourite, share;
         public TextView title, location, description, price;
         public CardView card;
 
@@ -56,8 +75,33 @@ implements Filterable {
             smallerImage = itemView.findViewById(R.id.card_place_thumb_image);
             viewArrow = itemView.findViewById(R.id.card_place_view);
 
+            favourite = itemView.findViewById(R.id.card_place_favourite);
+            share = itemView.findViewById(R.id.card_place_share);
+
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setFavourite(getAdapterPosition());
+                }
+            });
+
+            favourites = utils.getFavourites();
+
+            setFavourites();
+        }
+    }
+
+    private void setFavourite(int adapterPosition) {
+//        Toast.makeText(context, filteredPlaceList.get(adapterPosition).isFavourite() + "", Toast.LENGTH_SHORT).show();
+        if (filteredPlaceList.get(adapterPosition).isFavourite()){
+            filteredPlaceList.get(adapterPosition).setFavourite(false);
+            utils.removeFavourite(filteredPlaceList.get(adapterPosition).getId());
+        } else {
+            filteredPlaceList.get(adapterPosition).setFavourite(true);
+            utils.setFavourite(filteredPlaceList.get(adapterPosition).getId());
         }
 
+        notifyDataSetChanged();
     }
 
     @Override
@@ -80,6 +124,18 @@ implements Filterable {
 
         if (place.getPrice() != null)
             holder.price.setText(place.getPrice().toString());
+
+//        if (favourites != null) {
+//            if (favourites.contains(place.getId().toString())) {
+//                place.setFavourite(true);
+//            }
+////                holder.favourite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_accent_24dp));
+//        }
+
+        if (place.isFavourite())
+            holder.favourite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_accent_24dp));
+        else
+            holder.favourite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_border_white_24dp));
 
         GlideApp.with(context)
                 .load(place.getImage())
