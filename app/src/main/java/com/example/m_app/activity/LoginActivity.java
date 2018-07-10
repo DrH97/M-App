@@ -8,15 +8,20 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.m_app.R;
+import com.example.m_app.Utils;
 
 public class LoginActivity extends AppCompatActivity {
 
-  Button btn_login_signup, btn_login_login;
+    Button btn_login_signup, btn_login_login;
+
+    private Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        utils = new Utils(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
             btn_login_login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
             });

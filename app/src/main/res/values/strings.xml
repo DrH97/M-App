@@ -40,4 +40,14 @@
     </string>
     <string name="username">Username</string>
     <string name="or">OR</string>
+    <string name="action_search">Search</string>
+    <string name="action_Filter">Filter</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_sort_price">By Price</string>
+    <string name="action_sort_name">By Name</string>
+    <string name="action_sort_location">By Location</string>
+
+    <string name="facebook_application_id" translatable="false">1791254564245714</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1791254564245714</string>
+
 </resources>

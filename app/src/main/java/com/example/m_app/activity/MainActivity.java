@@ -1,37 +1,64 @@
 package com.example.m_app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.m_app.R;
+import com.example.m_app.Utils;
 import com.example.m_app.adapter.PlacesAdapter;
 import com.example.m_app.model.Place;
+import com.example.m_app.model.PlaceResponse;
+import com.example.m_app.rest.ApiClient;
+import com.example.m_app.rest.ApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        SwipeRefreshLayout.OnRefreshListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private PlacesAdapter mPlacesAdapter;
     private LinearLayoutManager mLinearLayoutManager;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private List<Place> placeList = new ArrayList<>();
+
+    private Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        utils = new Utils(this);
+
+        mSwipeRefreshLayout = findViewById(R.id.main_swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mSwipeRefreshLayout.setRefreshing(true);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -52,6 +79,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        utils.setNavItems(this, navigationView);
+        utils.setUpUserData(navigationView.getHeaderView(0));
 
         mRecyclerView = findViewById(R.id.places_recycler);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -76,6 +106,25 @@ public class MainActivity extends AppCompatActivity
         placeList.add(place);
 
         mPlacesAdapter.notifyDataSetChanged();
+
+        mSwipeRefreshLayout.setRefreshing(false);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<PlaceResponse> call = apiInterface.getPlaces();
+
+        call.enqueue(new Callback<PlaceResponse>() {
+            @Override
+            public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
+                if (response.body() != null)
+                    Log.e(TAG, response.body().getTotalResults().toString());
+            }
+
+            @Override
+            public void onFailure(Call<PlaceResponse> call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
     @Override
@@ -110,28 +159,43 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_favourites) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_offers) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_settings) {
 
+        } else if (id == R.id.nav_about) {
+
+        } else if (id == R.id.nav_signout) {
+            if(utils.signout())
+                finish();
+            else
+                Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_signin) {
+            startActivity(new Intent(this, SplashScreenActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        preparePlacesData();
     }
 }
